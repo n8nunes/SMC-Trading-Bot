@@ -9,3 +9,23 @@ class SupplyDemandZone:
         self.strength = strength
         self.mitigated = False
         self.tests = 0
+
+    def is_valid(self, current_price: float) -> bool:
+        '''
+        Check if zone is still valid (unmitigated)
+        '''
+
+        if self.mitigated:
+            return False
+        
+        if self.type == 'demand':
+            if current_price <= self.high:
+                self.mitigated = True
+                return False
+            
+        else: # supply
+            if current_price >= self.low:
+                self.mitigated = True
+                return False
+        
+        return True
